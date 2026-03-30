@@ -17,7 +17,7 @@ try:
     print("✅  Model loaded successfully.")
 except FileNotFoundError:
     pipeline = None
-    print("❌  pipeline.pkl not found. Run  python train_model.py  first.")
+    print("❌  pipeline.pkl not found. Run python train_model.py first.")
 
 FAKE_THRESHOLD = 0.72
 
