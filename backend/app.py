@@ -20,8 +20,8 @@ except FileNotFoundError:
 
 # ── Tuned thresholds ──
 FAKE_THRESHOLD = 0.60
-UNCERTAIN_LOW = 0.45
-UNCERTAIN_HIGH = 0.60
+UNCERTAIN_LOW = 0.48
+UNCERTAIN_HIGH = 0.52
 
 # ── Cleaning (same as training) ──
 def clean(text):
