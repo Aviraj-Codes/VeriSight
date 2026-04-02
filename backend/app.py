@@ -19,7 +19,7 @@ except FileNotFoundError:
     pipeline = None
     print("❌  pipeline.pkl not found. Run python train_model.py first.")
 
-FAKE_THRESHOLD = 0.50
+FAKE_THRESHOLD = 0.45
 
 # ── Text cleaning (must match train_model.py) ───
 def clean(text):
