@@ -169,7 +169,6 @@ print(classification_report(y_test, y_pred, target_names=["Real", "Fake"]))
 
 # ── 9. Per-source breakdown ───────────────────────────────────────────
 print("\n📊  Per-source accuracy:")
-test_indices = np.where(np.isin(X, X_test))[0]
 for source in df["source"].unique():
     src_mask = df["source"] == source
     src_X = df.loc[src_mask, "content"].values
