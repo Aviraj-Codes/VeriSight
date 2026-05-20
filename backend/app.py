@@ -62,7 +62,7 @@ if pipeline is not None:
         shap_explainer = None
 
 # ── Confidence threshold ──────────────────────────────────────────────
-FAKE_THRESHOLD = 0.55
+FAKE_THRESHOLD = 0.52
 
 # ── Text cleaning ─────────────────────────────────────────────────────
 def clean(text):
