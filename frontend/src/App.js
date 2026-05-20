@@ -9,20 +9,19 @@ function App() {
 
   const handleAnalyze = async () => {
     if (!inputText.trim()) return;
+
     setLoading(true);
     setResult(null);
     setError(null);
+
     try {
       const response = await fetch("https://verisight-backend.onrender.com/predict", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: inputText }),
       });
-      if (!response.ok) {
-        throw new Error(`Server error: ${response.status}`);
-      }
+
+      if (!response.ok) throw new Error(`Server error: ${response.status}`);
       const data = await response.json();
       setResult(data);
     } catch (err) {
@@ -35,24 +34,26 @@ function App() {
   const confidencePct = result ? Math.round(result.confidence * 100) : 0;
   const isFake = result?.prediction?.toLowerCase() === "fake";
 
+  // Normalize keyword scores for bar width (0–100%)
+  const maxScore = result?.keywords?.length
+    ? Math.max(...result.keywords.map((k) => k.score))
+    : 1;
+
   return (
     <div className="app-wrapper">
-      {/* Dark overlay */}
       <div className="overlay" />
-
-      {/* Ink splatter decorations */}
       <div className="ink ink-1" />
       <div className="ink ink-2" />
 
       <div className="card">
         {/* Header */}
         <div className="card-header">
-        <div className="badge">PRESS INTELLIGENCE</div>
-        <img src="/favicon.png" alt="VeriSight Logo" className="card-logo"/>
-        <h1 className="title">VeriSight</h1>
-        <p className="subtitle">Analyze news authenticity with AI</p>
-        <div className="divider" />
-      </div>
+          <div className="badge">PRESS INTELLIGENCE</div>
+          <img src="/favicon.png" alt="VeriSight Logo" className="card-logo" />
+          <h1 className="title">VeriSight</h1>
+          <p className="subtitle">Analyze news authenticity with AI</p>
+          <div className="divider" />
+        </div>
 
         {/* Input */}
         <div className="input-section">
@@ -92,21 +93,28 @@ function App() {
             <span>{error}</span>
           </div>
         )}
+
         {/* Result */}
         {result && (
           <div className={`result-box ${isFake ? "result-fake" : "result-real"}`}>
+
+            {/* Verdict header */}
             <div className="result-header">
               <span className="result-label">VERDICT</span>
               <span className={`result-badge ${isFake ? "badge-fake" : "badge-real"}`}>
                 {isFake ? "⚠ FAKE" : "✓ REAL"}
               </span>
             </div>
+
+            {/* Prediction word */}
             <div className="result-prediction">
               <span className="prediction-word" data-fake={isFake}>
                 {result.prediction}
               </span>
               <span className="prediction-sub">content detected</span>
             </div>
+
+            {/* Confidence bar */}
             <div className="confidence-section">
               <div className="confidence-row">
                 <span className="confidence-label">CONFIDENCE SCORE</span>
@@ -125,6 +133,36 @@ function App() {
                 <span>100%</span>
               </div>
             </div>
+
+            {/* Keyword explainability */}
+            {result.keywords && result.keywords.length > 0 && (
+              <div className="keywords-section">
+                <div className="keywords-header">
+                  <span className="keywords-label">
+                    {isFake ? "⚡ KEY SIGNALS DRIVING THIS VERDICT" : "✦ KEY SIGNALS SUPPORTING AUTHENTICITY"}
+                  </span>
+                </div>
+                <div className="keywords-list">
+                  {result.keywords.map((kw, i) => (
+                    <div className="keyword-row" key={i}>
+                      <span className="keyword-word">{kw.word}</span>
+                      <div className="keyword-bar-track">
+                        <div
+                          className={`keyword-bar-fill ${isFake ? "kbar-fake" : "kbar-real"}`}
+                          style={{ width: `${(kw.score / maxScore) * 100}%` }}
+                        />
+                      </div>
+                      <span className="keyword-score">{(kw.score * 100).toFixed(1)}</span>
+                    </div>
+                  ))}
+                </div>
+                <p className="keywords-note">
+                  These words had the highest influence on the model's decision.
+                </p>
+              </div>
+            )}
+
+            {/* Result note */}
             <p className="result-note">
               {isFake
                 ? "This content shows patterns commonly associated with misinformation. Exercise caution before sharing."
@@ -132,12 +170,14 @@ function App() {
             </p>
           </div>
         )}
+
         {/* Footer */}
         <div className="card-footer">
-          <span>Powered by ML · Dataset: News Articles</span>
+          <span>Trained on FakeNewsNet · PolitiFact · GossipCop</span>
         </div>
       </div>
     </div>
   );
 }
+
 export default App;
