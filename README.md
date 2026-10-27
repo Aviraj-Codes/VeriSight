@@ -21,7 +21,7 @@ VeriSight is a full-stack web application that uses a trained machine learning m
 
 | Layer | Technology |
 |---|---|
-| Frontend | React (Create React App), plain CSS |
+| Frontend | React JS, plain CSS |
 | Backend | Python, Flask, Flask-CORS |
 | ML Model | scikit-learn — TF-IDF + Logistic Regression |
 | Data | Custom news articles dataset (CSV) |
