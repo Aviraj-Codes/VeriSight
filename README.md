@@ -1,7 +1,5 @@
 # VeriSight — AI-Powered Fake News Detector
 
-> Analyze news authenticity in seconds using machine learning.
-
 VeriSight is a full-stack web application that uses a trained machine learning model to classify news articles as **Real** or **Fake**, along with a confidence score. It features a newspaper-themed glassmorphism UI built in React, backed by a Flask REST API.
 
 ---
